@@ -27,6 +27,7 @@ var (
 
 // RedisClient is a minimal client interface.
 type RedisClient interface {
+	Get(key string) *redis.StringCmd
 	SetNX(key string, value interface{}, expiration time.Duration) *redis.BoolCmd
 	Eval(script string, keys []string, args ...interface{}) *redis.Cmd
 	EvalSha(sha1 string, keys []string, args ...interface{}) *redis.Cmd
@@ -220,7 +221,7 @@ func (l *Locker) GetToken() string {
 	return l.token
 }
 
-func GetLocker(client *redis.ClusterClient, key string, opts *Options) (*Locker, error) {
+func GetLocker(client RedisClient, key string, opts *Options) (*Locker, error) {
 	cmd := client.Get(key)
 	if cmd.Err() != nil {
 		return &Locker{}, cmd.Err()
