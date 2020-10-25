@@ -1,4 +1,4 @@
-module github.com/bsm/redis-lock
+module github.com/kshamajain99/redis-lock
 
 require (
 	github.com/go-redis/redis v6.14.2+incompatible
